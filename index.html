@@ -1,0 +1,2031 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RAVA — Estúdio Tipográfico & Cromático</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Fontshare API: Fundições Independentes (Indian Type Foundry) -->
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@300,400,500,600,700&f[]=technor@300,400,500,600,700&f[]=boska@300,400,500,600,700&f[]=cabinet-grotesk@300,400,500,600,700&f[]=satoshi@300,400,500,600,700&f[]=general-sans@300,400,500,600,700&f[]=switzer@300,400,500,600,700&f[]=zodiak@300,400,500,600,700&f[]=nippo@300,400,500,600,700&display=swap" rel="stylesheet" />
+
+  <!-- Google Fonts API: Fontes Arquitetônicas, Editoriais e Técnicas -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Azeret+Mono:wght@300;400;500;600;700&family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600;6..96,700&family=Chakra+Petch:wght@300;400;500;600;700&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Oxanium:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Dynamic Font Injection Container -->
+  <div id="dynamic-font-links"></div>
+  <style id="dynamic-font-faces"></style>
+
+  <style>
+    :root {
+      /* Paleta Oficial RAVA Padrão */
+      --bg-color: #0D0D0D;
+      --text-color: #F5F0E8;
+      --accent-color: #D4AF37;
+      --logo-secondary: #858078;
+
+      /* Tokens derivados dinamicamente via JS para contraste perfeito */
+      --surface-bg: rgba(255, 255, 255, 0.035);
+      --elevated-bg: rgba(255, 255, 255, 0.065);
+      --border-subtle: rgba(212, 175, 55, 0.22);
+      --border-strong: rgba(212, 175, 55, 0.65);
+      --text-muted: rgba(245, 240, 232, 0.62);
+      --accent-soft: rgba(212, 175, 55, 0.14);
+      --grid-line: rgba(212, 175, 55, 0.04);
+
+      /* Tipografia & Proporções */
+      --font-brand: 'Clash Display', sans-serif;
+      --font-body: 'Satoshi', sans-serif;
+      --font-data: 'Nippo', monospace;
+      --brand-weight: 500;
+      --brand-tracking: 0.26em;
+      --brand-case: uppercase;
+      --logo-size: 116px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Superfícies & Bordas Adaptativas */
+    .studio-surface {
+      background-color: var(--surface-bg);
+      border: 1px solid var(--border-subtle);
+      transition: background-color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .studio-elevated {
+      background-color: var(--elevated-bg);
+      border: 1px solid var(--border-subtle);
+      transition: background-color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .studio-border-strong {
+      border-color: var(--border-strong) !important;
+    }
+
+    .studio-muted {
+      color: var(--text-muted);
+    }
+
+    .studio-accent {
+      color: var(--accent-color);
+    }
+
+    /* Palco Arquitetônico */
+    .stage-canvas {
+      background-color: var(--bg-color);
+      background-image:
+        radial-gradient(circle at 50% 0%, var(--accent-soft) 0%, transparent 65%),
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 100% 100%, 38px 38px, 38px 38px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Classes de Aplicação Tipográfica */
+    .role-brand {
+      font-family: var(--font-brand);
+      font-weight: var(--brand-weight);
+    }
+
+    .role-wordmark {
+      font-family: var(--font-brand);
+      font-weight: var(--brand-weight);
+      letter-spacing: var(--brand-tracking);
+      text-transform: var(--brand-case);
+      margin-right: calc(var(--brand-tracking) * -1);
+    }
+
+    .role-body {
+      font-family: var(--font-body);
+    }
+
+    .role-data {
+      font-family: var(--font-data);
+    }
+
+    /* Contenteditable Luxury Hover & Focus */
+    [contenteditable="true"] {
+      outline: none;
+      border-radius: 6px;
+      transition: box-shadow 0.2s ease, background-color 0.2s ease;
+      cursor: text;
+    }
+    [contenteditable="true"]:hover {
+      box-shadow: 0 0 0 1px var(--border-subtle);
+      background-color: var(--surface-bg);
+    }
+    [contenteditable="true"]:focus {
+      box-shadow: 0 0 0 1.5px var(--accent-color);
+      background-color: var(--elevated-bg);
+    }
+
+    /* Native Color Input Styling */
+    input[type="color"].rava-color-picker {
+      -webkit-appearance: none;
+      appearance: none;
+      border: none;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+    input[type="color"].rava-color-picker::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+    input[type="color"].rava-color-picker::-webkit-color-swatch {
+      border: 1.5px solid var(--border-strong);
+      border-radius: 10px;
+    }
+    input[type="color"].rava-color-picker::-moz-color-swatch {
+      border: 1.5px solid var(--border-strong);
+      border-radius: 10px;
+    }
+
+    /* Range Slider */
+    input[type="range"].rava-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 3px;
+      background: var(--border-subtle);
+      border-radius: 999px;
+      outline: none;
+    }
+    input[type="range"].rava-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent-color);
+      border: 2px solid var(--bg-color);
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+    input[type="range"].rava-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.18);
+    }
+    input[type="range"].rava-slider::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent-color);
+      border: 2px solid var(--bg-color);
+      cursor: pointer;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-subtle);
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-color);
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Toast Notification (Substitui alert()) -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 pointer-events-none opacity-0 translate-y-3 transition-all duration-300">
+    <div style="background-color: var(--bg-color); border-color: var(--accent-color); color: var(--text-color);" class="border px-5 py-3.5 rounded-xl shadow-2xl flex items-center gap-3">
+      <span style="background-color: var(--accent-color);" class="w-2.5 h-2.5 rounded-full animate-pulse shrink-0"></span>
+      <span id="toast-message" class="text-xs sm:text-sm tracking-wide">Especificação copiada.</span>
+    </div>
+  </div>
+
+  <!-- CABEÇALHO FIXO MINIMALISTA -->
+  <header style="background-color: var(--bg-color); border-color: var(--border-subtle);" class="sticky top-0 z-40 backdrop-blur-md bg-opacity-90 border-b">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3.5">
+        <div id="header-emblem-slot" class="w-9 h-9 shrink-0"></div>
+        <div>
+          <h1 class="text-sm sm:text-base font-medium tracking-[0.14em] uppercase flex items-center gap-2">
+            <span>RAVA</span>
+            <span class="studio-accent">·</span>
+            <span>Estúdio Tipográfico & Cromático</span>
+          </h1>
+          <p id="header-live-telemetry" class="text-[11px] studio-muted hidden md:block">
+            Clash Display · Satoshi · Nippo — #0D0D0D / #F5F0E8 / #D4AF37
+          </p>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        onclick="copyCurrentSpecification()"
+        style="background-color: var(--accent-color); color: var(--bg-color);"
+        class="px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-[0.15em] transition-opacity hover:opacity-90 cursor-pointer flex items-center gap-2 shadow-lg"
+      >
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+        <span>Copiar Especificação Atual</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="max-w-[1440px] mx-auto px-4 sm:px-8 py-6 sm:py-8 space-y-8">
+
+    <!-- PAINEL DE CONTROLE SUPERIOR ORGANIZADO EM ABAS -->
+    <section aria-label="Painel de Controlo do Estúdio" class="studio-surface rounded-2xl p-4 sm:p-6 space-y-5">
+
+      <!-- Navegação por Abas -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-4" style="border-color: var(--border-subtle);">
+        <div class="flex flex-wrap items-center gap-2" role="tablist">
+          <button
+            type="button"
+            role="tab"
+            id="tab-btn-colors"
+            onclick="switchControlTab('colors')"
+            class="control-tab-btn px-4 py-2.5 rounded-xl text-xs font-medium uppercase tracking-[0.14em] transition-all cursor-pointer border"
+          >
+            1. Cores & Paleta
+          </button>
+          <button
+            type="button"
+            role="tab"
+            id="tab-btn-typography"
+            onclick="switchControlTab('typography')"
+            class="control-tab-btn px-4 py-2.5 rounded-xl text-xs font-medium uppercase tracking-[0.14em] transition-all cursor-pointer border"
+          >
+            2. Tipografia (3 Papéis + Custom/Upload)
+          </button>
+          <button
+            type="button"
+            role="tab"
+            id="tab-btn-logo"
+            onclick="switchControlTab('logo')"
+            class="control-tab-btn px-4 py-2.5 rounded-xl text-xs font-medium uppercase tracking-[0.14em] transition-all cursor-pointer border"
+          >
+            3. Logo & Proporções
+          </button>
+        </div>
+
+        <button
+          type="button"
+          id="btn-toggle-all-panels"
+          onclick="toggleExpandAllPanels()"
+          class="text-[11px] uppercase tracking-[0.16em] studio-accent hover:underline cursor-pointer self-start sm:self-auto"
+        >
+          Mostrar todas as secções
+        </button>
+      </div>
+
+      <!-- ABA 1: ESTÚDIO CROMÁTICO (LIBERDADE TOTAL DE CORES) -->
+      <div id="panel-colors" class="control-panel space-y-5">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+          <div>
+            <span class="text-[10px] uppercase tracking-[0.24em] studio-accent block">Estúdio Cromático</span>
+            <h2 class="text-base font-medium">Liberdade Total de Cores & Contrastes</h2>
+          </div>
+
+          <!-- Botões de Ação Rápida -->
+          <div class="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onclick="restoreRavaDefault()"
+              class="studio-elevated px-3.5 py-2 rounded-xl text-xs font-medium hover:border-[var(--accent-color)] transition-all cursor-pointer"
+            >
+              Restaurar Padrão RAVA (#0D0D0D / #F5F0E8 / #D4AF37)
+            </button>
+            <button
+              type="button"
+              onclick="invertBgAndText()"
+              class="studio-elevated px-3.5 py-2 rounded-xl text-xs font-medium hover:border-[var(--accent-color)] transition-all cursor-pointer flex items-center gap-1.5"
+            >
+              <span>Inverter Fundo ↔ Texto</span>
+            </button>
+            <button
+              type="button"
+              id="btn-logo-mono-toggle"
+              onclick="toggleLogoMonochrome()"
+              class="studio-elevated px-3.5 py-2 rounded-xl text-xs font-medium hover:border-[var(--accent-color)] transition-all cursor-pointer"
+            >
+              Logo: Duas Cores (Alternar Monocromática)
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Seletores de Cor Nativos Sincronizados com HEX -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+          <!-- Fundo Principal -->
+          <div class="studio-elevated rounded-xl p-3.5 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] uppercase tracking-[0.14em] font-medium">Fundo Principal</span>
+              <span class="text-[10px] font-mono studio-muted">--bg-color</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <input type="color" id="picker-bg" value="#0D0D0D" class="rava-color-picker w-11 h-11 shrink-0" aria-label="Seletor Fundo Principal" />
+              <input type="text" id="hex-bg" value="#0D0D0D" maxlength="7" class="w-full rounded-lg px-3 py-2 text-xs font-mono uppercase studio-surface focus:outline-none focus:border-[var(--accent-color)]" aria-label="Código HEX Fundo Principal" />
+            </div>
+          </div>
+
+          <!-- Texto Principal -->
+          <div class="studio-elevated rounded-xl p-3.5 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] uppercase tracking-[0.14em] font-medium">Texto Principal</span>
+              <span class="text-[10px] font-mono studio-muted">--text-color</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <input type="color" id="picker-text" value="#F5F0E8" class="rava-color-picker w-11 h-11 shrink-0" aria-label="Seletor Texto Principal" />
+              <input type="text" id="hex-text" value="#F5F0E8" maxlength="7" class="w-full rounded-lg px-3 py-2 text-xs font-mono uppercase studio-surface focus:outline-none focus:border-[var(--accent-color)]" aria-label="Código HEX Texto Principal" />
+            </div>
+          </div>
+
+          <!-- Acento / Detalhes Premium -->
+          <div class="studio-elevated rounded-xl p-3.5 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] uppercase tracking-[0.14em] font-medium">Acento Premium</span>
+              <span class="text-[10px] font-mono studio-muted">--accent-color</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <input type="color" id="picker-accent" value="#D4AF37" class="rava-color-picker w-11 h-11 shrink-0" aria-label="Seletor Acento Premium" />
+              <input type="text" id="hex-accent" value="#D4AF37" maxlength="7" class="w-full rounded-lg px-3 py-2 text-xs font-mono uppercase studio-surface focus:outline-none focus:border-[var(--accent-color)]" aria-label="Código HEX Acento Premium" />
+            </div>
+          </div>
+
+          <!-- Traço Secundário da Logo -->
+          <div class="studio-elevated rounded-xl p-3.5 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] uppercase tracking-[0.14em] font-medium">Secundário Logo</span>
+              <span class="text-[10px] font-mono studio-muted">--logo-secondary</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <input type="color" id="picker-secondary" value="#858078" class="rava-color-picker w-11 h-11 shrink-0" aria-label="Seletor Secundário da Logo" />
+              <input type="text" id="hex-secondary" value="#858078" maxlength="7" class="w-full rounded-lg px-3 py-2 text-xs font-mono uppercase studio-surface focus:outline-none focus:border-[var(--accent-color)]" aria-label="Código HEX Secundário da Logo" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Presets Rápidos de Inspiração de Luxo -->
+        <div class="space-y-2.5 pt-1">
+          <span class="text-[11px] uppercase tracking-[0.18em] studio-muted block">Presets de Inspiração de Luxo</span>
+          <div id="color-presets-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-2.5">
+            <!-- Preenchido via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ABA 2: TIPOGRAFIA (3 PAPÉIS + CUSTOM + UPLOAD) -->
+      <div id="panel-typography" class="control-panel hidden space-y-5">
+        <div>
+          <span class="text-[10px] uppercase tracking-[0.24em] studio-accent block">Sistema Tipográfico Livre</span>
+          <h2 class="text-base font-medium">3 Papéis Tipográficos, Carregamento Externo & Importação Local</h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <!-- PAPEL 1: FONTE DA MARCA -->
+          <div class="studio-elevated rounded-2xl p-4 space-y-3.5 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs uppercase tracking-[0.16em] font-semibold studio-accent">01. Fonte da Marca</span>
+                <span id="role-brand-badge" class="text-[10px] px-2 py-0.5 rounded studio-surface">Fontshare</span>
+              </div>
+
+              <!-- Seletor Categorizado com Preview na Própria Tipografia -->
+              <div class="relative" id="dropdown-wrapper-brand">
+                <button
+                  type="button"
+                  onclick="toggleFontDropdown('brand')"
+                  class="w-full studio-surface rounded-xl px-3.5 py-2.5 flex items-center justify-between gap-2 text-left hover:border-[var(--accent-color)] transition-colors cursor-pointer"
+                >
+                  <div class="truncate">
+                    <span id="selected-label-brand" class="text-base block truncate" style="font-family: var(--font-brand);">Clash Display</span>
+                    <span id="selected-meta-brand" class="text-[10px] studio-muted block truncate">Levemente Quadradas & Arquitetônicas</span>
+                  </div>
+                  <svg class="w-4 h-4 shrink-0 studio-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6" />
+                  </svg>
+                </button>
+                <div
+                  id="dropdown-list-brand"
+                  style="background-color: var(--bg-color); border-color: var(--border-strong);"
+                  class="hidden absolute left-0 right-0 mt-1.5 max-h-72 overflow-y-auto rounded-xl border shadow-2xl z-30 p-1.5 space-y-1"
+                ></div>
+              </div>
+
+              <!-- Carregar qualquer fonte do Google Fonts ou Fontshare -->
+              <div class="space-y-1.5 pt-2 border-t" style="border-color: var(--border-subtle);">
+                <label for="custom-input-brand" class="text-[10px] uppercase tracking-[0.14em] studio-muted block">
+                  Testar qualquer fonte (Google Fonts ou Fontshare)
+                </label>
+                <div class="flex gap-2">
+                  <input
+                    type="text"
+                    id="custom-input-brand"
+                    placeholder="Ex: Chillax, Melodrama, Montserrat..."
+                    class="w-full rounded-xl px-3 py-2 text-xs studio-surface focus:outline-none focus:border-[var(--accent-color)]"
+                  />
+                  <button
+                    type="button"
+                    onclick="loadExternalFont('brand')"
+                    style="background-color: var(--accent-color); color: var(--bg-color);"
+                    class="px-3.5 py-2 rounded-xl text-xs font-semibold uppercase tracking-wider shrink-0 cursor-pointer hover:opacity-90"
+                  >
+                    Carregar
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Importar arquivo local (.ttf, .otf, .woff, .woff2) -->
+            <div class="pt-2 border-t" style="border-color: var(--border-subtle);">
+              <label class="w-full studio-surface hover:border-[var(--accent-color)] rounded-xl px-3 py-2 text-[11px] flex items-center justify-center gap-2 cursor-pointer transition-colors">
+                <svg class="w-3.5 h-3.5 studio-accent shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12" />
+                </svg>
+                <span>Importar Arquivo de Fonte (.ttf, .otf, .woff, .woff2)</span>
+                <input type="file" accept=".ttf,.otf,.woff,.woff2" onchange="importLocalFontFile(event, 'brand')" class="hidden" />
+              </label>
+            </div>
+          </div>
+
+          <!-- PAPEL 2: CORPO DE TEXTO -->
+          <div class="studio-elevated rounded-2xl p-4 space-y-3.5 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs uppercase tracking-[0.16em] font-semibold studio-accent">02. Corpo de Texto</span>
+                <span id="role-body-badge" class="text-[10px] px-2 py-0.5 rounded studio-surface">Fontshare</span>
+              </div>
+
+              <!-- Seletor Categorizado com Preview -->
+              <div class="relative" id="dropdown-wrapper-body">
+                <button
+                  type="button"
+                  onclick="toggleFontDropdown('body')"
+                  class="w-full studio-surface rounded-xl px-3.5 py-2.5 flex items-center justify-between gap-2 text-left hover:border-[var(--accent-color)] transition-colors cursor-pointer"
+                >
+                  <div class="truncate">
+                    <span id="selected-label-body" class="text-base block truncate" style="font-family: var(--font-body);">Satoshi</span>
+                    <span id="selected-meta-body" class="text-[10px] studio-muted block truncate">Neo-Grotesca Contemporânea</span>
+                  </div>
+                  <svg class="w-4 h-4 shrink-0 studio-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6" />
+                  </svg>
+                </button>
+                <div
+                  id="dropdown-list-body"
+                  style="background-color: var(--bg-color); border-color: var(--border-strong);"
+                  class="hidden absolute left-0 right-0 mt-1.5 max-h-72 overflow-y-auto rounded-xl border shadow-2xl z-30 p-1.5 space-y-1"
+                ></div>
+              </div>
+
+              <!-- Carregar qualquer fonte -->
+              <div class="space-y-1.5 pt-2 border-t" style="border-color: var(--border-subtle);">
+                <label for="custom-input-body" class="text-[10px] uppercase tracking-[0.14em] studio-muted block">
+                  Testar qualquer fonte (Google Fonts ou Fontshare)
+                </label>
+                <div class="flex gap-2">
+                  <input
+                    type="text"
+                    id="custom-input-body"
+                    placeholder="Ex: Inter, Work Sans, Merriweather..."
+                    class="w-full rounded-xl px-3 py-2 text-xs studio-surface focus:outline-none focus:border-[var(--accent-color)]"
+                  />
+                  <button
+                    type="button"
+                    onclick="loadExternalFont('body')"
+                    style="background-color: var(--accent-color); color: var(--bg-color);"
+                    class="px-3.5 py-2 rounded-xl text-xs font-semibold uppercase tracking-wider shrink-0 cursor-pointer hover:opacity-90"
+                  >
+                    Carregar
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Importar arquivo local -->
+            <div class="pt-2 border-t" style="border-color: var(--border-subtle);">
+              <label class="w-full studio-surface hover:border-[var(--accent-color)] rounded-xl px-3 py-2 text-[11px] flex items-center justify-center gap-2 cursor-pointer transition-colors">
+                <svg class="w-3.5 h-3.5 studio-accent shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12" />
+                </svg>
+                <span>Importar Arquivo de Fonte (.ttf, .otf, .woff, .woff2)</span>
+                <input type="file" accept=".ttf,.otf,.woff,.woff2" onchange="importLocalFontFile(event, 'body')" class="hidden" />
+              </label>
+            </div>
+          </div>
+
+          <!-- PAPEL 3: DADOS ESPECIAIS -->
+          <div class="studio-elevated rounded-2xl p-4 space-y-3.5 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs uppercase tracking-[0.16em] font-semibold studio-accent">03. Dados Especiais</span>
+                <span id="role-data-badge" class="text-[10px] px-2 py-0.5 rounded studio-surface">Fontshare</span>
+              </div>
+
+              <!-- Seletor Categorizado com Preview -->
+              <div class="relative" id="dropdown-wrapper-data">
+                <button
+                  type="button"
+                  onclick="toggleFontDropdown('data')"
+                  class="w-full studio-surface rounded-xl px-3.5 py-2.5 flex items-center justify-between gap-2 text-left hover:border-[var(--accent-color)] transition-colors cursor-pointer"
+                >
+                  <div class="truncate">
+                    <span id="selected-label-data" class="text-base block truncate" style="font-family: var(--font-data);">Nippo</span>
+                    <span id="selected-meta-data" class="text-[10px] studio-muted block truncate">Técnica Quadrada & Atelier</span>
+                  </div>
+                  <svg class="w-4 h-4 shrink-0 studio-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6" />
+                  </svg>
+                </button>
+                <div
+                  id="dropdown-list-data"
+                  style="background-color: var(--bg-color); border-color: var(--border-strong);"
+                  class="hidden absolute left-0 right-0 mt-1.5 max-h-72 overflow-y-auto rounded-xl border shadow-2xl z-30 p-1.5 space-y-1"
+                ></div>
+              </div>
+
+              <!-- Carregar qualquer fonte -->
+              <div class="space-y-1.5 pt-2 border-t" style="border-color: var(--border-subtle);">
+                <label for="custom-input-data" class="text-[10px] uppercase tracking-[0.14em] studio-muted block">
+                  Testar qualquer fonte (Google Fonts ou Fontshare)
+                </label>
+                <div class="flex gap-2">
+                  <input
+                    type="text"
+                    id="custom-input-data"
+                    placeholder="Ex: Roboto Mono, Fira Code, Orbitron..."
+                    class="w-full rounded-xl px-3 py-2 text-xs studio-surface focus:outline-none focus:border-[var(--accent-color)]"
+                  />
+                  <button
+                    type="button"
+                    onclick="loadExternalFont('data')"
+                    style="background-color: var(--accent-color); color: var(--bg-color);"
+                    class="px-3.5 py-2 rounded-xl text-xs font-semibold uppercase tracking-wider shrink-0 cursor-pointer hover:opacity-90"
+                  >
+                    Carregar
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Importar arquivo local -->
+            <div class="pt-2 border-t" style="border-color: var(--border-subtle);">
+              <label class="w-full studio-surface hover:border-[var(--accent-color)] rounded-xl px-3 py-2 text-[11px] flex items-center justify-center gap-2 cursor-pointer transition-colors">
+                <svg class="w-3.5 h-3.5 studio-accent shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12" />
+                </svg>
+                <span>Importar Arquivo de Fonte (.ttf, .otf, .woff, .woff2)</span>
+                <input type="file" accept=".ttf,.otf,.woff,.woff2" onchange="importLocalFontFile(event, 'data')" class="hidden" />
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABA 3: LOGO & PROPORÇÕES -->
+      <div id="panel-logo" class="control-panel hidden space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <span class="text-[10px] uppercase tracking-[0.24em] studio-accent block">Arquitetura da Marca</span>
+            <h2 class="text-base font-medium">Disposição do Símbolo, Proporções & Ficheiro Original</h2>
+          </div>
+
+          <!-- Upload SVG / PNG Original -->
+          <div class="flex flex-wrap items-center gap-2.5">
+            <label class="studio-elevated hover:border-[var(--accent-color)] px-3.5 py-2 rounded-xl text-xs font-medium cursor-pointer flex items-center gap-2 transition-colors">
+              <svg class="w-3.5 h-3.5 studio-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>Substituir Logo (.svg ou .png)</span>
+              <input type="file" id="upload-custom-logo" accept=".svg,image/svg+xml,image/png,image/webp" class="hidden" />
+            </label>
+            <button
+              type="button"
+              id="btn-restore-vector-logo"
+              onclick="restoreVectorLogo()"
+              class="hidden text-xs studio-accent underline cursor-pointer"
+            >
+              Restaurar SVG Vetorial RAVA
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Disposição -->
+          <div class="studio-elevated rounded-xl p-4 space-y-2.5">
+            <span class="text-[11px] uppercase tracking-[0.14em] studio-muted block">Disposição da Logo</span>
+            <div class="grid grid-cols-1 gap-1.5">
+              <button type="button" data-layout="horizontal" onclick="setLogoLayout('horizontal')" class="logo-layout-btn py-2 px-3 rounded-lg text-xs text-left border transition-all cursor-pointer">
+                Horizontal (Símbolo + RAVA)
+              </button>
+              <button type="button" data-layout="vertical" onclick="setLogoLayout('vertical')" class="logo-layout-btn py-2 px-3 rounded-lg text-xs text-left border transition-all cursor-pointer">
+                Vertical Empilhada
+              </button>
+              <button type="button" data-layout="subtitled" onclick="setLogoLayout('subtitled')" class="logo-layout-btn py-2 px-3 rounded-lg text-xs text-left border transition-all cursor-pointer">
+                Emblema com Subtítulo
+              </button>
+            </div>
+          </div>
+
+          <!-- Tamanho da Logo & Espaçamento -->
+          <div class="studio-elevated rounded-xl p-4 space-y-4">
+            <div class="space-y-2">
+              <div class="flex justify-between text-xs">
+                <span class="uppercase tracking-[0.12em] studio-muted text-[11px]">Tamanho da Logo</span>
+                <span id="readout-logo-size" class="font-mono studio-accent">116px</span>
+              </div>
+              <input type="range" id="slider-logo-size" min="56" max="180" step="4" value="116" class="rava-slider" />
+            </div>
+
+            <div class="space-y-2 pt-1">
+              <div class="flex justify-between text-xs">
+                <span class="uppercase tracking-[0.12em] studio-muted text-[11px]">Espaçamento (Tracking)</span>
+                <span id="readout-tracking" class="font-mono studio-accent">0.26em</span>
+              </div>
+              <input type="range" id="slider-tracking" min="0.05" max="0.65" step="0.01" value="0.26" class="rava-slider" />
+            </div>
+          </div>
+
+          <!-- Peso da Fonte da Marca (300 a 700) -->
+          <div class="studio-elevated rounded-xl p-4 space-y-3">
+            <span class="text-[11px] uppercase tracking-[0.14em] studio-muted block">Peso da Fonte da Marca</span>
+            <div class="grid grid-cols-5 gap-1.5">
+              <button type="button" data-weight="300" onclick="setBrandWeight(300)" class="brand-weight-btn py-2 rounded-lg text-xs border transition-all cursor-pointer">300</button>
+              <button type="button" data-weight="400" onclick="setBrandWeight(400)" class="brand-weight-btn py-2 rounded-lg text-xs border transition-all cursor-pointer">400</button>
+              <button type="button" data-weight="500" onclick="setBrandWeight(500)" class="brand-weight-btn py-2 rounded-lg text-xs border transition-all cursor-pointer">500</button>
+              <button type="button" data-weight="600" onclick="setBrandWeight(600)" class="brand-weight-btn py-2 rounded-lg text-xs border transition-all cursor-pointer">600</button>
+              <button type="button" data-weight="700" onclick="setBrandWeight(700)" class="brand-weight-btn py-2 rounded-lg text-xs border transition-all cursor-pointer">700</button>
+            </div>
+
+            <div class="pt-1 space-y-2">
+              <span class="text-[11px] uppercase tracking-[0.14em] studio-muted block">Caixa Tipográfica</span>
+              <div class="grid grid-cols-3 gap-1.5">
+                <button type="button" data-case="uppercase" onclick="setBrandCase('uppercase')" class="brand-case-btn py-1.5 px-2 rounded-lg text-[11px] border transition-all cursor-pointer">MAIÚSCULAS</button>
+                <button type="button" data-case="capitalize" onclick="setBrandCase('capitalize')" class="brand-case-btn py-1.5 px-2 rounded-lg text-[11px] border transition-all cursor-pointer">Capitalizada</button>
+                <button type="button" data-case="lowercase" onclick="setBrandCase('lowercase')" class="brand-case-btn py-1.5 px-2 rounded-lg text-[11px] border transition-all cursor-pointer">minúsculas</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Texto Editável da Marca -->
+          <div class="studio-elevated rounded-xl p-4 space-y-3">
+            <label for="input-brand-name" class="text-[11px] uppercase tracking-[0.14em] studio-muted block">
+              Texto da Marca (Padrão: RAVA)
+            </label>
+            <input
+              type="text"
+              id="input-brand-name"
+              value="RAVA"
+              maxlength="24"
+              class="w-full rounded-xl px-3.5 py-2.5 text-sm font-medium tracking-widest studio-surface focus:outline-none focus:border-[var(--accent-color)]"
+            />
+            <p class="text-[11px] studio-muted leading-relaxed">
+              Também pode clicar diretamente em qualquer texto do Palco 01 abaixo para o editar ao vivo.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PALCO 01 — COMPOSIÇÃO PRINCIPAL EM TEMPO REAL -->
+    <section aria-label="Palco 01 — Composição Principal em Tempo Real" class="space-y-3">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-2.5">
+          <span class="text-[11px] uppercase tracking-[0.24em] studio-accent font-medium">
+            Palco 01 · Composição Principal em Tempo Real
+          </span>
+          <span class="text-[10px] px-2.5 py-0.5 rounded-full studio-surface studio-muted">
+            Clique nos textos para editar ao vivo
+          </span>
+        </div>
+        <span id="stage01-telemetry" class="text-xs studio-muted font-mono">
+          Clash Display · Peso 500 · 0.26em
+        </span>
+      </div>
+
+      <div class="stage-canvas rounded-2xl p-6 sm:p-12 lg:p-16 relative overflow-hidden">
+        <!-- Cantoneiras Arquitetónicas -->
+        <div style="border-color: var(--border-strong);" class="absolute top-4 left-4 w-5 h-5 border-t border-l pointer-events-none"></div>
+        <div style="border-color: var(--border-strong);" class="absolute top-4 right-4 w-5 h-5 border-t border-r pointer-events-none"></div>
+        <div style="border-color: var(--border-strong);" class="absolute bottom-4 left-4 w-5 h-5 border-b border-l pointer-events-none"></div>
+        <div style="border-color: var(--border-strong);" class="absolute bottom-4 right-4 w-5 h-5 border-b border-r pointer-events-none"></div>
+
+        <!-- Bloco Central: Logo + Wordmark -->
+        <div id="stage01-lockup" class="flex flex-col items-center justify-center text-center py-4 sm:py-8">
+          <div
+            id="stage01-emblem"
+            style="width: var(--logo-size); height: var(--logo-size);"
+            class="shrink-0 flex items-center justify-center transition-all duration-200"
+          ></div>
+
+          <div id="stage01-wordmark-group" class="mt-6 flex flex-col items-center">
+            <div
+              id="stage01-wordmark"
+              contenteditable="true"
+              spellcheck="false"
+              class="role-wordmark text-5xl sm:text-7xl lg:text-8xl leading-none px-2 py-1"
+            >RAVA</div>
+
+            <div
+              id="stage01-subtitle-wrap"
+              class="hidden mt-4 flex flex-col items-center"
+            >
+              <div style="background-color: var(--accent-color);" class="w-16 h-[1px] opacity-60 mb-3"></div>
+              <div
+                id="stage01-subtitle"
+                contenteditable="true"
+                spellcheck="false"
+                class="role-data text-xs sm:text-sm tracking-[0.28em] uppercase studio-accent px-2 py-0.5"
+              >ATELIER DE ALTA RELOJOARIA & OBJETOS ÚNICOS</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Separador Editorial -->
+        <div style="border-color: var(--border-subtle);" class="max-w-4xl mx-auto my-8 sm:my-10 border-t"></div>
+
+        <!-- Hierarquia Editorial Completa (Título da Marca + Corpo de Texto + Dados Especiais) -->
+        <div class="max-w-4xl mx-auto space-y-6">
+          <div class="space-y-3 text-center sm:text-left">
+            <div class="flex flex-wrap items-center justify-center sm:justify-between gap-2">
+              <span class="text-[10px] uppercase tracking-[0.22em] studio-accent font-mono">
+                Hierarquia Tipográfica · Marca + Narrativa + Dados
+              </span>
+              <span id="stage01-fonts-pill" class="text-[11px] studio-muted">
+                Marca: Clash Display · Corpo: Satoshi · Dados: Nippo
+              </span>
+            </div>
+
+            <!-- Título da Marca -->
+            <h2
+              id="stage01-editorial-title"
+              contenteditable="true"
+              spellcheck="false"
+              class="role-brand text-2xl sm:text-4xl tracking-wide leading-tight px-1 py-0.5"
+            >A Expressão Silenciosa da Alta Precisão</h2>
+
+            <!-- Corpo de Texto -->
+            <p
+              id="stage01-editorial-body"
+              contenteditable="true"
+              spellcheck="false"
+              class="role-body text-sm sm:text-base lg:text-[17px] leading-relaxed opacity-85 px-1 py-1"
+            >Cada criação RAVA nasce do encontro entre engenharia de precisão e acabamento artesanal meticuloso. Concebidas em séries estritamente limitadas, as nossas peças celebram a pureza das proporções arquitetónicas, materiais nobres selecionados na origem e uma estética atemporal pensada para perdurar por gerações.</p>
+          </div>
+
+          <!-- Faixa de Dados Especiais -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
+            <div class="studio-surface rounded-xl px-4 py-3.5">
+              <span class="text-[9px] uppercase tracking-[0.2em] studio-muted block mb-1">Série</span>
+              <span
+                id="stage01-data-1"
+                contenteditable="true"
+                spellcheck="false"
+                class="role-data text-xs sm:text-sm font-medium studio-accent block px-1"
+              >EDIÇÃO NUMERADA Nº 01 / 50</span>
+            </div>
+
+            <div class="studio-surface rounded-xl px-4 py-3.5">
+              <span class="text-[9px] uppercase tracking-[0.2em] studio-muted block mb-1">Valor de Referência</span>
+              <span
+                id="stage01-data-2"
+                contenteditable="true"
+                spellcheck="false"
+                class="role-data text-sm sm:text-base font-semibold block px-1"
+              >€ 480,00</span>
+            </div>
+
+            <div class="studio-surface rounded-xl px-4 py-3.5">
+              <span class="text-[9px] uppercase tracking-[0.2em] studio-muted block mb-1">Composição</span>
+              <span
+                id="stage01-data-3"
+                contenteditable="true"
+                spellcheck="false"
+                class="role-data text-xs sm:text-sm font-medium block px-1"
+              >LATÃO MACIÇO & ACABAMENTO FOSCO</span>
+            </div>
+
+            <div class="studio-surface rounded-xl px-4 py-3.5">
+              <span class="text-[9px] uppercase tracking-[0.2em] studio-muted block mb-1">Especificação</span>
+              <span
+                id="stage01-data-4"
+                contenteditable="true"
+                spellcheck="false"
+                class="role-data text-xs sm:text-sm font-medium block px-1"
+              >240 × 120 × 45 MM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PALCO 02 — GALERIA COMPARATIVA LADO A LADO (LOGO + TODAS AS FONTES DA MARCA) -->
+    <section aria-label="Palco 02 — Galeria Comparativa Lado a Lado" class="space-y-4">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+        <div>
+          <span class="text-[11px] uppercase tracking-[0.24em] studio-accent block">
+            Palco 02 · Galeria Comparativa Lado a Lado
+          </span>
+          <h2 class="text-lg sm:text-xl font-medium mt-0.5">
+            Emblema RAVA + Todas as Fontes da Marca Simultaneamente
+          </h2>
+        </div>
+
+        <!-- Filtros por Estilo -->
+        <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Filtrar fontes da marca por estilo">
+          <button
+            type="button"
+            data-filter="all"
+            onclick="setGalleryFilter('all')"
+            class="gallery-filter-btn px-3.5 py-2 rounded-xl text-xs font-medium border transition-all cursor-pointer"
+          >
+            Todas
+          </button>
+          <button
+            type="button"
+            data-filter="architectural"
+            onclick="setGalleryFilter('architectural')"
+            class="gallery-filter-btn px-3.5 py-2 rounded-xl text-xs font-medium border transition-all cursor-pointer"
+          >
+            Levemente Quadradas & Arquitetônicas
+          </button>
+          <button
+            type="button"
+            data-filter="serif"
+            onclick="setGalleryFilter('serif')"
+            class="gallery-filter-btn px-3.5 py-2 rounded-xl text-xs font-medium border transition-all cursor-pointer"
+          >
+            Serifadas de Luxo & Editorial
+          </button>
+          <button
+            type="button"
+            data-filter="minimal"
+            onclick="setGalleryFilter('minimal')"
+            class="gallery-filter-btn px-3.5 py-2 rounded-xl text-xs font-medium border transition-all cursor-pointer"
+          >
+            Minimalistas & Esculturais
+          </button>
+        </div>
+      </div>
+
+      <!-- Grade Comparativa -->
+      <div id="comparison-gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <!-- Renderizado dinamicamente via JS com todas as 16 fontes + fontes customizadas -->
+      </div>
+    </section>
+
+  </main>
+
+  <footer style="border-color: var(--border-subtle);" class="max-w-[1440px] mx-auto px-4 sm:px-8 py-6 mt-8 border-t flex flex-col sm:flex-row items-center justify-between gap-2 text-xs studio-muted">
+    <span>RAVA — Estúdio Tipográfico & Cromático</span>
+    <span id="footer-palette-readout">Fundo #0D0D0D · Texto #F5F0E8 · Acento #D4AF37 · Secundário #858078</span>
+  </footer>
+
+  <script>
+    // =========================================================================
+    // 1. CATÁLOGO DIVERSIFICADO DE FONTES (FONTSHARE + GOOGLE FONTS)
+    // =========================================================================
+    const BRAND_FONTS = [
+      // Levemente Quadradas & Arquitetônicas (6)
+      {
+        id: 'clash-display',
+        name: 'Clash Display',
+        family: "'Clash Display', sans-serif",
+        source: 'Fontshare',
+        category: 'architectural',
+        categoryLabel: 'Levemente Quadradas & Arquitetônicas'
+      },
+      {
+        id: 'technor',
+        name: 'Technor',
+        family: "'Technor', sans-serif",
+        source: 'Fontshare',
+        category: 'architectural',
+        categoryLabel: 'Levemente Quadradas & Arquitetônicas'
+      },
+      {
+        id: 'cabinet-grotesk',
+        name: 'Cabinet Grotesk',
+        family: "'Cabinet Grotesk', sans-serif",
+        source: 'Fontshare',
+        category: 'architectural',
+        categoryLabel: 'Levemente Quadradas & Arquitetônicas'
+      },
+      {
+        id: 'syne',
+        name: 'Syne',
+        family: "'Syne', sans-serif",
+        source: 'Google Fonts',
+        category: 'architectural',
+        categoryLabel: 'Levemente Quadradas & Arquitetônicas'
+      },
+      {
+        id: 'space-grotesk',
+        name: 'Space Grotesk',
+        family: "'Space Grotesk', sans-serif",
+        source: 'Google Fonts',
+        category: 'architectural',
+        categoryLabel: 'Levemente Quadradas & Arquitetônicas'
+      },
+      {
+        id: 'chakra-petch',
+        name: 'Chakra Petch',
+        family: "'Chakra Petch', sans-serif",
+        source: 'Google Fonts',
+        category: 'architectural',
+        categoryLabel: 'Levemente Quadradas & Arquitetônicas'
+      },
+
+      // Serifadas de Luxo & Editorial (5)
+      {
+        id: 'boska',
+        name: 'Boska',
+        family: "'Boska', serif",
+        source: 'Fontshare',
+        category: 'serif',
+        categoryLabel: 'Serifadas de Luxo & Editorial'
+      },
+      {
+        id: 'zodiak',
+        name: 'Zodiak',
+        family: "'Zodiak', serif",
+        source: 'Fontshare',
+        category: 'serif',
+        categoryLabel: 'Serifadas de Luxo & Editorial'
+      },
+      {
+        id: 'cormorant-garamond',
+        name: 'Cormorant Garamond',
+        family: "'Cormorant Garamond', serif",
+        source: 'Google Fonts',
+        category: 'serif',
+        categoryLabel: 'Serifadas de Luxo & Editorial'
+      },
+      {
+        id: 'cinzel',
+        name: 'Cinzel',
+        family: "'Cinzel', serif",
+        source: 'Google Fonts',
+        category: 'serif',
+        categoryLabel: 'Serifadas de Luxo & Editorial'
+      },
+      {
+        id: 'bodoni-moda',
+        name: 'Bodoni Moda',
+        family: "'Bodoni Moda', serif",
+        source: 'Google Fonts',
+        category: 'serif',
+        categoryLabel: 'Serifadas de Luxo & Editorial'
+      },
+
+      // Minimalistas & Esculturais (5)
+      {
+        id: 'satoshi',
+        name: 'Satoshi',
+        family: "'Satoshi', sans-serif",
+        source: 'Fontshare',
+        category: 'minimal',
+        categoryLabel: 'Minimalistas & Esculturais'
+      },
+      {
+        id: 'general-sans',
+        name: 'General Sans',
+        family: "'General Sans', sans-serif",
+        source: 'Fontshare',
+        category: 'minimal',
+        categoryLabel: 'Minimalistas & Esculturais'
+      },
+      {
+        id: 'switzer',
+        name: 'Switzer',
+        family: "'Switzer', sans-serif",
+        source: 'Fontshare',
+        category: 'minimal',
+        categoryLabel: 'Minimalistas & Esculturais'
+      },
+      {
+        id: 'outfit',
+        name: 'Outfit',
+        family: "'Outfit', sans-serif",
+        source: 'Google Fonts',
+        category: 'minimal',
+        categoryLabel: 'Minimalistas & Esculturais'
+      },
+      {
+        id: 'archivo',
+        name: 'Archivo',
+        family: "'Archivo', sans-serif",
+        source: 'Google Fonts',
+        category: 'minimal',
+        categoryLabel: 'Minimalistas & Esculturais'
+      }
+    ];
+
+    const BODY_FONTS = [
+      { id: 'satoshi', name: 'Satoshi', family: "'Satoshi', sans-serif", source: 'Fontshare', categoryLabel: 'Neo-Grotesca Contemporânea' },
+      { id: 'general-sans', name: 'General Sans', family: "'General Sans', sans-serif", source: 'Fontshare', categoryLabel: 'Neo-Grotesca Contemporânea' },
+      { id: 'switzer', name: 'Switzer', family: "'Switzer', sans-serif", source: 'Fontshare', categoryLabel: 'Suíça de Alta Legibilidade' },
+      { id: 'plus-jakarta-sans', name: 'Plus Jakarta Sans', family: "'Plus Jakarta Sans', sans-serif", source: 'Google Fonts', categoryLabel: 'Geométrica Humanista' },
+      { id: 'dm-sans', name: 'DM Sans', family: "'DM Sans', sans-serif", source: 'Google Fonts', categoryLabel: 'Geométrica Minimalista' },
+      { id: 'manrope', name: 'Manrope', family: "'Manrope', sans-serif", source: 'Google Fonts', categoryLabel: 'Moderna Equilibrada' },
+      { id: 'outfit', name: 'Outfit', family: "'Outfit', sans-serif", source: 'Google Fonts', categoryLabel: 'Geométrica Limpa' },
+      { id: 'lora', name: 'Lora', family: "'Lora', serif", source: 'Google Fonts', categoryLabel: 'Serifa Editorial Contemporânea' },
+      { id: 'cormorant-garamond', name: 'Cormorant Garamond', family: "'Cormorant Garamond', serif", source: 'Google Fonts', categoryLabel: 'Serifa Editorial Clássica' },
+      { id: 'zodiak', name: 'Zodiak', family: "'Zodiak', serif", source: 'Fontshare', categoryLabel: 'Serifa Literária' }
+    ];
+
+    const DATA_FONTS = [
+      { id: 'nippo', name: 'Nippo', family: "'Nippo', monospace", source: 'Fontshare', categoryLabel: 'Técnica Quadrada & Atelier' },
+      { id: 'jetbrains-mono', name: 'JetBrains Mono', family: "'JetBrains Mono', monospace", source: 'Google Fonts', categoryLabel: 'Monoespaçada de Precisão' },
+      { id: 'ibm-plex-mono', name: 'IBM Plex Mono', family: "'IBM Plex Mono', monospace", source: 'Google Fonts', categoryLabel: 'Monoespaçada Arquitetónica' },
+      { id: 'space-mono', name: 'Space Mono', family: "'Space Mono', monospace", source: 'Google Fonts', categoryLabel: 'Monoespaçada Editorial' },
+      { id: 'oxanium', name: 'Oxanium', family: "'Oxanium', sans-serif", source: 'Google Fonts', categoryLabel: 'Quadrada de Relojoaria' },
+      { id: 'azeret-mono', name: 'Azeret Mono', family: "'Azeret Mono', monospace", source: 'Google Fonts', categoryLabel: 'Monoespaçada Contemporânea' },
+      { id: 'chakra-petch', name: 'Chakra Petch', family: "'Chakra Petch', sans-serif", source: 'Google Fonts', categoryLabel: 'Geométrica Chanfrada' },
+      { id: 'cinzel', name: 'Cinzel', family: "'Cinzel', serif", source: 'Google Fonts', categoryLabel: 'Inscrição Clássica' }
+    ];
+
+    // Presets Rápidos de Inspiração de Luxo ("Padrão RAVA" primeiro)
+    const COLOR_PRESETS = [
+      {
+        id: 'rava-default',
+        name: 'Padrão RAVA',
+        bg: '#0D0D0D',
+        text: '#F5F0E8',
+        accent: '#D4AF37',
+        secondary: '#858078'
+      },
+      {
+        id: 'ivory-antique',
+        name: 'Marfim & Ouro Antigo',
+        bg: '#F5F0E8',
+        text: '#0D0D0D',
+        accent: '#B89225',
+        secondary: '#7A756D'
+      },
+      {
+        id: 'obsidian-champagne',
+        name: 'Obsidiana & Champanhe',
+        bg: '#111113',
+        text: '#F2ECE1',
+        accent: '#DFC498',
+        secondary: '#6E6A63'
+      },
+      {
+        id: 'imperial-green',
+        name: 'Verde Imperial & Ouro',
+        bg: '#0A1914',
+        text: '#F4EFE6',
+        accent: '#D4AF37',
+        secondary: '#5D7068'
+      },
+      {
+        id: 'midnight-platinum',
+        name: 'Azul Meia-Noite & Platina',
+        bg: '#0B101B',
+        text: '#F0F2F5',
+        accent: '#C5CEDB',
+        secondary: '#5E687A'
+      },
+      {
+        id: 'burgundy-rosegold',
+        name: 'Borgonha Profundo & Ouro Rosé',
+        bg: '#1A0B0E',
+        text: '#F7EFEA',
+        accent: '#D8A48F',
+        secondary: '#7D5C62'
+      }
+    ];
+
+    // =========================================================================
+    // 2. ESTADO GLOBAL DA APLICAÇÃO
+    // =========================================================================
+    const state = {
+      // Cores Padrão RAVA ao abrir o site
+      bgColor: '#0D0D0D',
+      textColor: '#F5F0E8',
+      accentColor: '#D4AF37',
+      logoSecondary: '#858078',
+      logoMonochrome: false,
+
+      // Tipografia
+      brandFontId: 'clash-display',
+      bodyFontId: 'satoshi',
+      dataFontId: 'nippo',
+
+      // Logo & Proporções
+      logoLayout: 'vertical', // 'horizontal' | 'vertical' | 'subtitled'
+      logoSize: 116,
+      brandWeight: 500,
+      tracking: 0.26,
+      brandCase: 'uppercase', // 'uppercase' | 'capitalize' | 'lowercase'
+      brandText: 'RAVA',
+      customLogoUrl: null,
+
+      // UI & Filtros
+      activeTab: 'colors',
+      expandAllPanels: false,
+      galleryFilter: 'all'
+    };
+
+    // =========================================================================
+    // 3. UTILITÁRIOS DE COR & CONTRASTE AUTOMÁTICO
+    // =========================================================================
+    function normalizeHex(input) {
+      let val = input.trim();
+      if (!val.startsWith('#')) val = '#' + val;
+      if (/^#[0-9A-Fa-f]{3}$/.test(val)) {
+        val = '#' + val[1] + val[1] + val[2] + val[2] + val[3] + val[3];
+      }
+      if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+        return val.toUpperCase();
+      }
+      return null;
+    }
+
+    function hexToRgb(hex) {
+      const clean = hex.replace('#', '');
+      const num = parseInt(clean, 16);
+      return {
+        r: (num >> 16) & 255,
+        g: (num >> 8) & 255,
+        b: num & 255
+      };
+    }
+
+    function isLightColor(hex) {
+      const { r, g, b } = hexToRgb(hex);
+      const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      return luminance > 0.52;
+    }
+
+    function applyColorTokens() {
+      const root = document.documentElement;
+      const bg = state.bgColor;
+      const text = state.textColor;
+      const accent = state.accentColor;
+      const secondary = state.logoSecondary;
+
+      const textRgb = hexToRgb(text);
+      const accentRgb = hexToRgb(accent);
+      const lightBg = isLightColor(bg);
+
+      root.style.setProperty('--bg-color', bg);
+      root.style.setProperty('--text-color', text);
+      root.style.setProperty('--accent-color', accent);
+      root.style.setProperty('--logo-secondary', secondary);
+
+      // Superfícies adaptativas com base na luminância do fundo escolhido
+      root.style.setProperty(
+        '--surface-bg',
+        lightBg ? 'rgba(0, 0, 0, 0.035)' : 'rgba(255, 255, 255, 0.035)'
+      );
+      root.style.setProperty(
+        '--elevated-bg',
+        lightBg ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.065)'
+      );
+      root.style.setProperty(
+        '--border-subtle',
+        `rgba(${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b}, 0.25)`
+      );
+      root.style.setProperty(
+        '--border-strong',
+        `rgba(${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b}, 0.72)`
+      );
+      root.style.setProperty(
+        '--text-muted',
+        `rgba(${textRgb.r}, ${textRgb.g}, ${textRgb.b}, 0.64)`
+      );
+      root.style.setProperty(
+        '--accent-soft',
+        `rgba(${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b}, 0.11)`
+      );
+      root.style.setProperty(
+        '--grid-line',
+        `rgba(${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b}, 0.045)`
+      );
+
+      // Sincronizar inputs nativos e HEX
+      document.getElementById('picker-bg').value = bg;
+      document.getElementById('hex-bg').value = bg;
+      document.getElementById('picker-text').value = text;
+      document.getElementById('hex-text').value = text;
+      document.getElementById('picker-accent').value = accent;
+      document.getElementById('hex-accent').value = accent;
+      document.getElementById('picker-secondary').value = secondary;
+      document.getElementById('hex-secondary').value = secondary;
+
+      // Atualizar botão monocromático
+      const monoBtn = document.getElementById('btn-logo-mono-toggle');
+      monoBtn.textContent = state.logoMonochrome
+        ? 'Logo: Monocromática (Alternar Duas Cores)'
+        : 'Logo: Duas Cores (Alternar Monocromática)';
+    }
+
+    // =========================================================================
+    // 4. EMBLEMA VETORIAL DA RAVA (SVG REFINADO)
+    // =========================================================================
+    function getRavaLogoSvg(uniqueId = 'main') {
+      if (state.customLogoUrl) {
+        return `<img src="${state.customLogoUrl}" alt="Logo RAVA" class="w-full h-full object-contain" />`;
+      }
+
+      const accent = state.accentColor;
+      const baseColor = state.logoMonochrome ? state.accentColor : state.logoSecondary;
+      const gradId = `rava-ring-grad-${uniqueId}`;
+
+      return `
+        <svg viewBox="0 0 400 400" class="w-full h-full overflow-visible" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Emblema RAVA">
+          <defs>
+            <linearGradient id="${gradId}" x1="50%" y1="12%" x2="50%" y2="88%">
+              <stop offset="0%" stop-color="${accent}" />
+              <stop offset="52%" stop-color="${accent}" />
+              <stop offset="68%" stop-color="${baseColor}" />
+              <stop offset="100%" stop-color="${baseColor}" />
+            </linearGradient>
+          </defs>
+
+          <!-- CÍRCULO ABERTO NA LATERAL DIREITA & ONDAS FLUIDAS ENROLADAS NA BASE -->
+          <g stroke="url(#${gradId})" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Arco superior aberto à direita descendo até a onda enrolada inferior esquerda -->
+            <path d="M 344 166
+                     A 148 148 0 1 0 74 278
+                     C 90 302, 128 308, 137 294
+                     C 144 283, 126 278, 126 266
+                     C 126 254, 144 252, 154 265
+                     C 165 280, 156 306, 128 312
+                     C 108 316, 86 308, 74 294" />
+          </g>
+
+          <g stroke="${baseColor}" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Onda inferior direita com voluta ascendente -->
+            <path d="M 88 306
+                     A 148 148 0 0 0 338 256
+                     C 352 232, 352 204, 334 198
+                     C 318 193, 306 208, 310 222
+                     C 314 234, 328 232, 326 246
+                     C 322 272, 286 314, 240 334" />
+
+            <!-- Filete interno paralelo na curva inferior direita -->
+            <path d="M 272 325 C 304 308, 326 282, 336 256" stroke-width="4.2" />
+
+            <!-- Voluta central da base -->
+            <path d="M 122 324
+                     C 162 344, 214 338, 234 314
+                     C 242 304, 232 296, 222 298
+                     C 210 300, 204 288, 212 278
+                     C 222 266, 246 270, 250 288
+                     C 254 304, 242 320, 228 328" stroke-width="5.8" />
+          </g>
+
+          <!-- FLOR DE LÓTUS SIMÉTRICA & CHAMA INTERNA ESTILIZADA (--accent-color) -->
+          <g fill="${accent}">
+            <!-- Pétalas inferiores laterais -->
+            <path d="M 192 246 C 164 263, 120 258, 94 226 C 117 232, 146 234, 175 242 Z" />
+            <path d="M 208 246 C 236 263, 280 258, 306 226 C 283 232, 254 234, 225 242 Z" />
+
+            <!-- Pétalas principais esquerda -->
+            <path d="M 186 242 C 141 246, 113 218, 107 175 C 105 163, 99 155, 93 149 C 128 141, 162 155, 180 184 C 164 165, 138 155, 113 157 C 121 192, 141 230, 186 242 Z" />
+            <path d="M 182 234 C 151 232, 137 206, 131 182 C 128 174, 124 168, 120 164 C 144 164, 166 176, 178 198 C 166 184, 150 176, 135 175 C 142 198, 155 222, 182 234 Z" />
+
+            <!-- Pétalas principais direita -->
+            <path d="M 214 242 C 259 246, 287 218, 293 175 C 295 163, 301 155, 307 149 C 272 141, 238 155, 220 184 C 236 165, 262 155, 287 157 C 279 192, 259 230, 214 242 Z" />
+            <path d="M 218 234 C 249 232, 263 206, 269 182 C 272 174, 276 168, 280 164 C 256 164, 234 176, 222 198 C 234 184, 250 176, 265 175 C 258 198, 245 222, 218 234 Z" />
+
+            <!-- Pétalas superiores externas -->
+            <path d="M 141 154 C 133 134, 141 113, 153 99 C 155 93, 153 87, 150 83 C 165 89, 171 103, 165 121 C 165 107, 161 97, 156 92 C 147 105, 141 128, 141 154 Z" />
+            <path d="M 259 154 C 267 134, 259 113, 247 99 C 245 93, 247 87, 250 83 C 235 89, 229 103, 235 121 C 235 107, 239 97, 244 92 C 253 105, 259 128, 259 154 Z" />
+
+            <!-- Coroa superior -->
+            <path d="M 176 184 C 166 154, 174 125, 190 103 C 196 94, 196 83, 191 75 C 202 83, 204 97, 196 111 C 182 133, 176 158, 176 184 Z" />
+            <path d="M 155 164 C 151 142, 163 123, 181 107 C 169 123, 161 142, 159 166 Z" />
+            <path d="M 224 184 C 234 154, 226 125, 210 103 C 204 94, 204 83, 209 75 C 198 83, 196 97, 204 111 C 218 133, 224 158, 224 184 Z" />
+            <path d="M 245 164 C 249 142, 237 123, 219 107 C 231 123, 239 142, 241 166 Z" />
+
+            <!-- Cálice interno e chama central estilizada -->
+            <path d="M 196 232 C 176 226, 172 204, 178 184 C 180 198, 182 216, 196 226 Z" />
+            <path d="M 204 232 C 224 226, 228 204, 222 184 C 220 198, 218 216, 204 226 Z" />
+            <path d="M 182 166 C 180 144, 192 128, 200 112 C 208 128, 220 144, 218 166 C 216 148, 206 134, 200 122 C 194 134, 184 148, 182 166 Z" />
+            <path d="M 200 228 C 188 220, 188 204, 198 196 C 205 190, 204 180, 198 176 C 192 172, 191 162, 197 154 C 202 147, 203 139, 199 133 C 208 140, 211 152, 205 162 C 201 169, 202 177, 208 183 C 216 191, 216 208, 203 218 C 197 222, 197 226, 200 228 Z" />
+          </g>
+        </svg>
+      `;
+    }
+
+    // =========================================================================
+    // 5. CARREGAMENTO DINÂMICO DE FONTES EXTERNAS & ARQUIVOS LOCAIS
+    // =========================================================================
+    function loadExternalFont(role) {
+      const inputEl = document.getElementById(`custom-input-${role}`);
+      const rawName = inputEl.value.trim();
+      if (!rawName) {
+        showToast('Escreva o nome de uma fonte (ex: Montserrat, Chillax, Melodrama).');
+        return;
+      }
+
+      // Formatar nome limpo (ex: "bebas neue" -> "Bebas Neue")
+      const cleanName = rawName
+        .split(/\s+/)
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(' ');
+
+      const googleSlug = encodeURIComponent(cleanName).replace(/%20/g, '+');
+      const fontshareSlug = cleanName.toLowerCase().replace(/\s+/g, '-');
+
+      const linkContainer = document.getElementById('dynamic-font-links');
+
+      // Injetar Google Fonts
+      const gLink = document.createElement('link');
+      gLink.rel = 'stylesheet';
+      gLink.href = `https://fonts.googleapis.com/css2?family=${googleSlug}:wght@300;400;500;600;700&display=swap`;
+      linkContainer.appendChild(gLink);
+
+      // Injetar Fontshare
+      const fLink = document.createElement('link');
+      fLink.rel = 'stylesheet';
+      fLink.href = `https://api.fontshare.com/v2/css?f[]=${fontshareSlug}@300,400,500,600,700&display=swap`;
+      linkContainer.appendChild(fLink);
+
+      const newId = `custom-${Date.now()}-${fontshareSlug}`;
+      const newFontEntry = {
+        id: newId,
+        name: cleanName,
+        family: `'${cleanName}', sans-serif`,
+        source: 'Externa (Google/Fontshare)',
+        category: 'architectural',
+        categoryLabel: 'Fonte Externa Carregada'
+      };
+
+      // Adicionar ao catálogo correspondente (e sempre às fontes da marca se carregada na marca)
+      if (role === 'brand') {
+        BRAND_FONTS.unshift(newFontEntry);
+        state.brandFontId = newId;
+      } else if (role === 'body') {
+        BODY_FONTS.unshift(newFontEntry);
+        state.bodyFontId = newId;
+      } else {
+        DATA_FONTS.unshift(newFontEntry);
+        state.dataFontId = newId;
+      }
+
+      inputEl.value = '';
+      updateStudio();
+      showToast(`Fonte "${cleanName}" carregada e aplicada!`);
+    }
+
+    function importLocalFontFile(event, role) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      const blobUrl = URL.createObjectURL(file);
+      const baseName = file.name.replace(/\.[^/.]+$/, '');
+      const uniqueFamily = `RavaCustom_${baseName.replace(/[^a-zA-Z0-9]/g, '_')}_${Date.now()}`;
+
+      const styleTag = document.getElementById('dynamic-font-faces');
+      styleTag.textContent += `
+        @font-face {
+          font-family: '${uniqueFamily}';
+          src: url('${blobUrl}');
+          font-weight: 100 900;
+          font-style: normal;
+          font-display: swap;
+        }
+      `;
+
+      const newId = `local-${Date.now()}`;
+      const newFontEntry = {
+        id: newId,
+        name: baseName,
+        family: `'${uniqueFamily}', sans-serif`,
+        source: 'Ficheiro Local',
+        category: 'architectural',
+        categoryLabel: 'Importada (.ttf/.otf/.woff)'
+      };
+
+      if (role === 'brand') {
+        BRAND_FONTS.unshift(newFontEntry);
+        state.brandFontId = newId;
+      } else if (role === 'body') {
+        BODY_FONTS.unshift(newFontEntry);
+        state.bodyFontId = newId;
+      } else {
+        DATA_FONTS.unshift(newFontEntry);
+        state.dataFontId = newId;
+      }
+
+      event.target.value = '';
+      updateStudio();
+      showToast(`Ficheiro "${file.name}" importado com sucesso!`);
+    }
+
+    // =========================================================================
+    // 6. SELETORES DE FONTE CATEGORIZADOS COM PREVIEW NA PRÓPRIA TIPOGRAFIA
+    // =========================================================================
+    function renderFontDropdowns() {
+      // 1. Brand Dropdown (agrupado por categoria)
+      const brandList = document.getElementById('dropdown-list-brand');
+      const categories = [
+        { key: 'architectural', title: 'Levemente Quadradas & Arquitetônicas' },
+        { key: 'serif', title: 'Serifadas de Luxo & Editorial' },
+        { key: 'minimal', title: 'Minimalistas & Esculturais' }
+      ];
+
+      let brandHtml = '';
+      categories.forEach((cat) => {
+        const items = BRAND_FONTS.filter((f) => f.category === cat.key);
+        if (!items.length) return;
+        brandHtml += `<div class="px-2.5 pt-2 pb-1 text-[9px] uppercase tracking-[0.2em] studio-accent font-semibold">${cat.title}</div>`;
+        items.forEach((f) => {
+          const active = f.id === state.brandFontId;
+          brandHtml += `
+            <button
+              type="button"
+              onclick="selectRoleFont('brand', '${f.id}')"
+              class="w-full px-3 py-2 rounded-lg text-left flex items-center justify-between gap-2 transition-colors cursor-pointer ${
+                active ? 'studio-elevated studio-border-strong border' : 'hover:bg-white/5'
+              }"
+            >
+              <span style="font-family: ${f.family};" class="text-base truncate">${f.name}</span>
+              <span class="text-[10px] studio-muted shrink-0">${f.source}</span>
+            </button>
+          `;
+        });
+      });
+      brandList.innerHTML = brandHtml;
+
+      // 2. Body Dropdown
+      const bodyList = document.getElementById('dropdown-list-body');
+      bodyList.innerHTML = BODY_FONTS.map((f) => {
+        const active = f.id === state.bodyFontId;
+        return `
+          <button
+            type="button"
+            onclick="selectRoleFont('body', '${f.id}')"
+            class="w-full px-3 py-2 rounded-lg text-left flex items-center justify-between gap-2 transition-colors cursor-pointer ${
+              active ? 'studio-elevated studio-border-strong border' : 'hover:bg-white/5'
+            }"
+          >
+            <div>
+              <span style="font-family: ${f.family};" class="text-base block">${f.name}</span>
+              <span class="text-[10px] studio-muted block">${f.categoryLabel}</span>
+            </div>
+            <span class="text-[10px] studio-muted shrink-0">${f.source}</span>
+          </button>
+        `;
+      }).join('');
+
+      // 3. Data Dropdown
+      const dataList = document.getElementById('dropdown-list-data');
+      dataList.innerHTML = DATA_FONTS.map((f) => {
+        const active = f.id === state.dataFontId;
+        return `
+          <button
+            type="button"
+            onclick="selectRoleFont('data', '${f.id}')"
+            class="w-full px-3 py-2 rounded-lg text-left flex items-center justify-between gap-2 transition-colors cursor-pointer ${
+              active ? 'studio-elevated studio-border-strong border' : 'hover:bg-white/5'
+            }"
+          >
+            <div>
+              <span style="font-family: ${f.family};" class="text-sm block">${f.name}</span>
+              <span class="text-[10px] studio-muted block">${f.categoryLabel}</span>
+            </div>
+            <span class="text-[10px] studio-muted shrink-0">${f.source}</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function toggleFontDropdown(role) {
+      const target = document.getElementById(`dropdown-list-${role}`);
+      const isHidden = target.classList.contains('hidden');
+      closeAllFontDropdowns();
+      if (isHidden) {
+        target.classList.remove('hidden');
+      }
+    }
+
+    function closeAllFontDropdowns() {
+      ['brand', 'body', 'data'].forEach((r) => {
+        const el = document.getElementById(`dropdown-list-${r}`);
+        if (el) el.classList.add('hidden');
+      });
+    }
+
+    function selectRoleFont(role, fontId) {
+      if (role === 'brand') state.brandFontId = fontId;
+      if (role === 'body') state.bodyFontId = fontId;
+      if (role === 'data') state.dataFontId = fontId;
+      closeAllFontDropdowns();
+      updateStudio();
+    }
+
+    // =========================================================================
+    // 7. PRESETS DE CORES & GALERIA COMPARATIVA (PALCO 02)
+    // =========================================================================
+    function renderColorPresets() {
+      const grid = document.getElementById('color-presets-grid');
+      grid.innerHTML = COLOR_PRESETS.map((preset) => {
+        const isCurrent =
+          state.bgColor.toUpperCase() === preset.bg &&
+          state.textColor.toUpperCase() === preset.text &&
+          state.accentColor.toUpperCase() === preset.accent;
+
+        return `
+          <button
+            type="button"
+            onclick="applyColorPreset('${preset.id}')"
+            class="studio-elevated rounded-xl p-3 text-left transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${
+              isCurrent ? 'studio-border-strong border' : 'hover:border-[var(--accent-color)]'
+            }"
+          >
+            <div class="flex items-center justify-between gap-1">
+              <span class="text-xs font-medium truncate">${preset.name}</span>
+              ${isCurrent ? '<span class="w-2 h-2 rounded-full shrink-0" style="background-color: var(--accent-color);"></span>' : ''}
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-5 h-5 rounded-md border border-white/20" style="background-color: ${preset.bg};" title="Fundo ${preset.bg}"></span>
+              <span class="w-5 h-5 rounded-md border border-white/20" style="background-color: ${preset.text};" title="Texto ${preset.text}"></span>
+              <span class="w-5 h-5 rounded-md border border-white/20" style="background-color: ${preset.accent};" title="Acento ${preset.accent}"></span>
+              <span class="w-5 h-5 rounded-md border border-white/20" style="background-color: ${preset.secondary};" title="Secundário ${preset.secondary}"></span>
+            </div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function renderComparisonGallery() {
+      const grid = document.getElementById('comparison-gallery-grid');
+      const filteredFonts =
+        state.galleryFilter === 'all'
+          ? BRAND_FONTS
+          : BRAND_FONTS.filter((f) => f.category === state.galleryFilter);
+
+      grid.innerHTML = filteredFonts
+        .map((font, idx) => {
+          const isSelected = font.id === state.brandFontId;
+          const logoSvg = getRavaLogoSvg(`gal-${idx}`);
+
+          return `
+            <button
+              type="button"
+              onclick="selectRoleFont('brand', '${font.id}')"
+              class="studio-surface rounded-2xl p-5 text-left transition-all cursor-pointer flex flex-col justify-between gap-4 group ${
+                isSelected ? 'studio-border-strong border-2 shadow-xl' : 'hover:border-[var(--accent-color)]'
+              }"
+            >
+              <div class="flex items-start justify-between gap-2 w-full">
+                <div class="min-w-0">
+                  <span class="text-xs font-semibold block truncate">${font.name}</span>
+                  <span class="text-[10px] studio-muted block truncate">${font.categoryLabel}</span>
+                </div>
+                <span
+                  style="${
+                    isSelected
+                      ? 'background-color: var(--accent-color); color: var(--bg-color);'
+                      : ''
+                  }"
+                  class="text-[10px] px-2 py-0.5 rounded-md shrink-0 font-medium ${
+                    isSelected ? '' : 'studio-elevated studio-accent'
+                  }"
+                >
+                  ${isSelected ? 'Ativa no Palco' : font.source}
+                </span>
+              </div>
+
+              <!-- Emblema RAVA + Wordmark lado a lado -->
+              <div class="py-3 px-2 flex items-center justify-center gap-3.5 overflow-hidden">
+                <div class="w-11 h-11 shrink-0 flex items-center justify-center">
+                  ${logoSvg}
+                </div>
+                <div
+                  style="font-family: ${font.family}; font-weight: ${state.brandWeight}; letter-spacing: ${state.tracking}em; text-transform: ${state.brandCase}; margin-right: -${state.tracking}em;"
+                  class="text-2xl sm:text-3xl leading-none truncate transition-transform duration-200 group-hover:scale-[1.02]"
+                >
+                  ${escapeHtml(state.brandText || 'RAVA')}
+                </div>
+              </div>
+
+              <div class="pt-2 border-t flex items-center justify-between text-[10px] studio-muted" style="border-color: var(--border-subtle);">
+                <span>Peso ${state.brandWeight} · ${state.tracking.toFixed(2)}em</span>
+                <span class="studio-accent group-hover:translate-x-0.5 transition-transform">Aplicar →</span>
+              </div>
+            </button>
+          `;
+        })
+        .join('');
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // =========================================================================
+    // 8. ATUALIZAÇÃO CENTRAL DO ESTÚDIO
+    // =========================================================================
+    function updateStudio() {
+      applyColorTokens();
+
+      const brandFont = BRAND_FONTS.find((f) => f.id === state.brandFontId) || BRAND_FONTS[0];
+      const bodyFont = BODY_FONTS.find((f) => f.id === state.bodyFontId) || BODY_FONTS[0];
+      const dataFont = DATA_FONTS.find((f) => f.id === state.dataFontId) || DATA_FONTS[0];
+
+      // Variáveis CSS de Tipografia & Logo
+      const root = document.documentElement;
+      root.style.setProperty('--font-brand', brandFont.family);
+      root.style.setProperty('--font-body', bodyFont.family);
+      root.style.setProperty('--font-data', dataFont.family);
+      root.style.setProperty('--brand-weight', state.brandWeight);
+      root.style.setProperty('--brand-tracking', `${state.tracking}em`);
+      root.style.setProperty('--brand-case', state.brandCase);
+      root.style.setProperty('--logo-size', `${state.logoSize}px`);
+
+      // Atualizar Labels dos 3 Seletores
+      document.getElementById('selected-label-brand').textContent = brandFont.name;
+      document.getElementById('selected-label-brand').style.fontFamily = brandFont.family;
+      document.getElementById('selected-meta-brand').textContent = brandFont.categoryLabel;
+      document.getElementById('role-brand-badge').textContent = brandFont.source;
+
+      document.getElementById('selected-label-body').textContent = bodyFont.name;
+      document.getElementById('selected-label-body').style.fontFamily = bodyFont.family;
+      document.getElementById('selected-meta-body').textContent = bodyFont.categoryLabel;
+      document.getElementById('role-body-badge').textContent = bodyFont.source;
+
+      document.getElementById('selected-label-data').textContent = dataFont.name;
+      document.getElementById('selected-label-data').style.fontFamily = dataFont.family;
+      document.getElementById('selected-meta-data').textContent = dataFont.categoryLabel;
+      document.getElementById('role-data-badge').textContent = dataFont.source;
+
+      // Atualizar Telemetria do Cabeçalho, Palco e Rodapé
+      document.getElementById('header-live-telemetry').textContent =
+        `${brandFont.name} · ${bodyFont.name} · ${dataFont.name} — ${state.bgColor} / ${state.textColor} / ${state.accentColor}`;
+
+      document.getElementById('stage01-telemetry').textContent =
+        `${brandFont.name} · Peso ${state.brandWeight} · ${state.tracking.toFixed(2)}em`;
+
+      document.getElementById('stage01-fonts-pill').textContent =
+        `Marca: ${brandFont.name} · Corpo: ${bodyFont.name} · Dados: ${dataFont.name}`;
+
+      document.getElementById('footer-palette-readout').textContent =
+        `Fundo ${state.bgColor} · Texto ${state.textColor} · Acento ${state.accentColor} · Secundário ${state.logoSecondary}`;
+
+      // Atualizar Leituras dos Controles de Logo
+      document.getElementById('readout-logo-size').textContent = `${state.logoSize}px`;
+      document.getElementById('slider-logo-size').value = state.logoSize;
+      document.getElementById('readout-tracking').textContent = `${state.tracking.toFixed(2)}em`;
+      document.getElementById('slider-tracking').value = state.tracking;
+
+      // Renderizar Emblemas SVG no Cabeçalho e Palco 01
+      document.getElementById('header-emblem-slot').innerHTML = getRavaLogoSvg('header');
+      document.getElementById('stage01-emblem').innerHTML = getRavaLogoSvg('stage01');
+
+      // Sincronizar Texto da Marca
+      const wordmarkEl = document.getElementById('stage01-wordmark');
+      if (document.activeElement !== wordmarkEl) {
+        wordmarkEl.textContent = state.brandText || 'RAVA';
+      }
+      const brandInput = document.getElementById('input-brand-name');
+      if (document.activeElement !== brandInput) {
+        brandInput.value = state.brandText || 'RAVA';
+      }
+
+      // Aplicar Disposição da Logo no Palco 01
+      const lockup = document.getElementById('stage01-lockup');
+      const wordmarkGroup = document.getElementById('stage01-wordmark-group');
+      const subtitleWrap = document.getElementById('stage01-subtitle-wrap');
+
+      if (state.logoLayout === 'horizontal') {
+        lockup.className = 'flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-9 text-center sm:text-left py-4 sm:py-8';
+        wordmarkGroup.className = 'flex flex-col items-center sm:items-start';
+        subtitleWrap.classList.add('hidden');
+      } else if (state.logoLayout === 'subtitled') {
+        lockup.className = 'flex flex-col items-center justify-center text-center py-4 sm:py-8';
+        wordmarkGroup.className = 'mt-6 flex flex-col items-center';
+        subtitleWrap.classList.remove('hidden');
+        subtitleWrap.className = 'mt-4 flex flex-col items-center';
+      } else {
+        // vertical
+        lockup.className = 'flex flex-col items-center justify-center text-center py-4 sm:py-8';
+        wordmarkGroup.className = 'mt-6 flex flex-col items-center';
+        subtitleWrap.classList.add('hidden');
+      }
+
+      updateActiveButtonStyles();
+      renderColorPresets();
+      renderFontDropdowns();
+      renderComparisonGallery();
+    }
+
+    function updateActiveButtonStyles() {
+      // Abas do Painel Superior
+      ['colors', 'typography', 'logo'].forEach((tabKey) => {
+        const btn = document.getElementById(`tab-btn-${tabKey}`);
+        const panel = document.getElementById(`panel-${tabKey}`);
+        const isTabActive = state.expandAllPanels || state.activeTab === tabKey;
+
+        if (state.expandAllPanels) {
+          panel.classList.remove('hidden');
+          btn.style.backgroundColor = 'var(--elevated-bg)';
+          btn.style.color = 'var(--text-color)';
+          btn.style.borderColor = 'var(--border-strong)';
+        } else if (state.activeTab === tabKey) {
+          panel.classList.remove('hidden');
+          btn.style.backgroundColor = 'var(--accent-color)';
+          btn.style.color = 'var(--bg-color)';
+          btn.style.borderColor = 'var(--accent-color)';
+        } else {
+          panel.classList.add('hidden');
+          btn.style.backgroundColor = 'var(--elevated-bg)';
+          btn.style.color = 'var(--text-muted)';
+          btn.style.borderColor = 'var(--border-subtle)';
+        }
+      });
+
+      document.getElementById('btn-toggle-all-panels').textContent = state.expandAllPanels
+        ? 'Voltar à vista por abas'
+        : 'Mostrar todas as secções';
+
+      // Botões de Disposição da Logo
+      document.querySelectorAll('.logo-layout-btn').forEach((btn) => {
+        const active = btn.dataset.layout === state.logoLayout;
+        btn.style.backgroundColor = active ? 'var(--accent-color)' : 'var(--surface-bg)';
+        btn.style.color = active ? 'var(--bg-color)' : 'var(--text-color)';
+        btn.style.borderColor = active ? 'var(--accent-color)' : 'var(--border-subtle)';
+        btn.style.fontWeight = active ? '600' : '400';
+      });
+
+      // Botões de Peso
+      document.querySelectorAll('.brand-weight-btn').forEach((btn) => {
+        const active = Number(btn.dataset.weight) === state.brandWeight;
+        btn.style.backgroundColor = active ? 'var(--accent-color)' : 'var(--surface-bg)';
+        btn.style.color = active ? 'var(--bg-color)' : 'var(--text-color)';
+        btn.style.borderColor = active ? 'var(--accent-color)' : 'var(--border-subtle)';
+        btn.style.fontWeight = active ? '600' : '400';
+      });
+
+      // Botões de Caixa Tipográfica
+      document.querySelectorAll('.brand-case-btn').forEach((btn) => {
+        const active = btn.dataset.case === state.brandCase;
+        btn.style.backgroundColor = active ? 'var(--accent-color)' : 'var(--surface-bg)';
+        btn.style.color = active ? 'var(--bg-color)' : 'var(--text-color)';
+        btn.style.borderColor = active ? 'var(--accent-color)' : 'var(--border-subtle)';
+        btn.style.fontWeight = active ? '600' : '400';
+      });
+
+      // Filtros da Galeria Comparativa
+      document.querySelectorAll('.gallery-filter-btn').forEach((btn) => {
+        const active = btn.dataset.filter === state.galleryFilter;
+        btn.style.backgroundColor = active ? 'var(--accent-color)' : 'var(--surface-bg)';
+        btn.style.color = active ? 'var(--bg-color)' : 'var(--text-color)';
+        btn.style.borderColor = active ? 'var(--accent-color)' : 'var(--border-subtle)';
+      });
+    }
+
+    // =========================================================================
+    // 9. AÇÕES DO UTILIZADOR (CORES, LOGO, ABAS & EXPORTAÇÃO)
+    // =========================================================================
+    function switchControlTab(tab) {
+      state.expandAllPanels = false;
+      state.activeTab = tab;
+      updateActiveButtonStyles();
+    }
+
+    function toggleExpandAllPanels() {
+      state.expandAllPanels = !state.expandAllPanels;
+      updateActiveButtonStyles();
+    }
+
+    function applyColorPreset(presetId) {
+      const preset = COLOR_PRESETS.find((p) => p.id === presetId);
+      if (!preset) return;
+      state.bgColor = preset.bg;
+      state.textColor = preset.text;
+      state.accentColor = preset.accent;
+      state.logoSecondary = preset.secondary;
+      state.logoMonochrome = false;
+      updateStudio();
+      showToast(`Paleta "${preset.name}" aplicada.`);
+    }
+
+    function restoreRavaDefault() {
+      applyColorPreset('rava-default');
+    }
+
+    function invertBgAndText() {
+      const prevBg = state.bgColor;
+      state.bgColor = state.textColor;
+      state.textColor = prevBg;
+      updateStudio();
+      showToast('Cores de Fundo e Texto invertidas.');
+    }
+
+    function toggleLogoMonochrome() {
+      state.logoMonochrome = !state.logoMonochrome;
+      updateStudio();
+      showToast(
+        state.logoMonochrome
+          ? 'Logo em modo monocromático (cor de acento).'
+          : 'Logo restaurada para duas cores.'
+      );
+    }
+
+    function setLogoLayout(layout) {
+      state.logoLayout = layout;
+      updateStudio();
+    }
+
+    function setBrandWeight(weight) {
+      state.brandWeight = weight;
+      updateStudio();
+    }
+
+    function setBrandCase(brandCase) {
+      state.brandCase = brandCase;
+      updateStudio();
+    }
+
+    function setGalleryFilter(filter) {
+      state.galleryFilter = filter;
+      updateActiveButtonStyles();
+      renderComparisonGallery();
+    }
+
+    function restoreVectorLogo() {
+      state.customLogoUrl = null;
+      document.getElementById('upload-custom-logo').value = '';
+      document.getElementById('btn-restore-vector-logo').classList.add('hidden');
+      updateStudio();
+      showToast('Emblema vetorial RAVA restaurado.');
+    }
+
+    function copyCurrentSpecification() {
+      const brandFont = BRAND_FONTS.find((f) => f.id === state.brandFontId);
+      const bodyFont = BODY_FONTS.find((f) => f.id === state.bodyFontId);
+      const dataFont = DATA_FONTS.find((f) => f.id === state.dataFontId);
+
+      const specText = [
+        `RAVA — Especificação Tipográfica & Cromática`,
+        `--------------------------------------------------`,
+        `TIPOGRAFIA:`,
+        `• 1. Fonte da Marca: ${brandFont.name} (Peso: ${state.brandWeight}, Espaçamento: ${state.tracking.toFixed(2)}em, Caixa: ${state.brandCase})`,
+        `• 2. Corpo de Texto: ${bodyFont.name}`,
+        `• 3. Dados Especiais: ${dataFont.name}`,
+        ``,
+        `PALETA DE CORES:`,
+        `• Fundo Principal (--bg-color): ${state.bgColor}`,
+        `• Texto Principal (--text-color): ${state.textColor}`,
+        `• Acento Premium (--accent-color): ${state.accentColor}`,
+        `• Secundário da Logo (--logo-secondary): ${state.logoMonochrome ? `${state.accentColor} (Monocromático)` : state.logoSecondary}`,
+        ``,
+        `LOGO:`,
+        `• Disposição: ${state.logoLayout} | Tamanho: ${state.logoSize}px | Texto: "${state.brandText}"`
+      ].join('\n');
+
+      const textarea = document.createElement('textarea');
+      textarea.value = specText;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast('Especificação atual (3 fontes + códigos HEX) copiada!');
+      } catch (err) {
+        showToast('Não foi possível copiar automaticamente.');
+      }
+      document.body.removeChild(textarea);
+    }
+
+    let toastTimeout = null;
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const msgEl = document.getElementById('toast-message');
+      msgEl.textContent = message;
+      toast.classList.remove('opacity-0', 'translate-y-3');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'translate-y-3');
+      }, 3400);
+    }
+
+    // =========================================================================
+    // 10. VINCULAÇÃO DE EVENTOS
+    // =========================================================================
+    function bindColorPair(pickerId, hexId, stateKey) {
+      const picker = document.getElementById(pickerId);
+      const hexInput = document.getElementById(hexId);
+
+      picker.addEventListener('input', (e) => {
+        state[stateKey] = e.target.value.toUpperCase();
+        if (stateKey === 'logoSecondary') state.logoMonochrome = false;
+        updateStudio();
+      });
+
+      hexInput.addEventListener('input', (e) => {
+        const valid = normalizeHex(e.target.value);
+        if (valid) {
+          state[stateKey] = valid;
+          if (stateKey === 'logoSecondary') state.logoMonochrome = false;
+          updateStudio();
+        }
+      });
+
+      hexInput.addEventListener('blur', () => {
+        hexInput.value = state[stateKey];
+      });
+    }
+
+    function bindEvents() {
+      bindColorPair('picker-bg', 'hex-bg', 'bgColor');
+      bindColorPair('picker-text', 'hex-text', 'textColor');
+      bindColorPair('picker-accent', 'hex-accent', 'accentColor');
+      bindColorPair('picker-secondary', 'hex-secondary', 'logoSecondary');
+
+      // Sliders de Logo & Espaçamento
+      document.getElementById('slider-logo-size').addEventListener('input', (e) => {
+        state.logoSize = Number(e.target.value);
+        updateStudio();
+      });
+
+      document.getElementById('slider-tracking').addEventListener('input', (e) => {
+        state.tracking = parseFloat(e.target.value);
+        updateStudio();
+      });
+
+      // Texto da Marca sincronizado entre input e Palco 01
+      document.getElementById('input-brand-name').addEventListener('input', (e) => {
+        state.brandText = e.target.value;
+        document.getElementById('stage01-wordmark').textContent = state.brandText || 'RAVA';
+        renderComparisonGallery();
+      });
+
+      document.getElementById('stage01-wordmark').addEventListener('input', (e) => {
+        state.brandText = e.target.textContent.trim();
+        document.getElementById('input-brand-name').value = state.brandText;
+        renderComparisonGallery();
+      });
+
+      // Enter nos campos de fonte externa
+      ['brand', 'body', 'data'].forEach((role) => {
+        document.getElementById(`custom-input-${role}`).addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            loadExternalFont(role);
+          }
+        });
+      });
+
+      // Upload de arquivo de logo (.svg ou .png)
+      document.getElementById('upload-custom-logo').addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          state.customLogoUrl = evt.target.result;
+          document.getElementById('btn-restore-vector-logo').classList.remove('hidden');
+          updateStudio();
+          showToast(`Logo "${file.name}" carregada no estúdio.`);
+        };
+        reader.readAsDataURL(file);
+      });
+
+      // Fechar dropdowns ao clicar fora
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('[id^="dropdown-wrapper-"]')) {
+          closeAllFontDropdowns();
+        }
+      });
+    }
+
+    // Inicializar Estúdio
+    window.addEventListener('DOMContentLoaded', () => {
+      bindEvents();
+      updateStudio();
+    });
+  </script>
+</body>
+</html>
